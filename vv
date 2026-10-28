@@ -1,0 +1,18 @@
+name: build-reghack-mipsel
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install cross compiler
+        run: sudo apt-get update && sudo apt-get install -y gcc-mipsel-linux-gnu
+      - name: Fetch source and build
+        run: |
+          wget https://raw.githubusercontent.com/drizzt/reghack/master/reghack.c
+          mipsel-linux-gnu-gcc -O2 -static reghack.c -o reghack.mipsel.elf
+          file reghack.mipsel.elf
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reghack-mipsel
+          path: reghack.mipsel.elf
